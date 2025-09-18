@@ -131,7 +131,8 @@ fn main() {
                 .await?;
 
             // spawn raw transaction forwarding
-            let txhandle = handle.node.network.transactions_handle().await.unwrap();
+            let txhandle = handle.node.network.transactions_handle().await
+                .expect("transactions_handle should be initialized for raw transaction forwarding");
             let raw_txs =
                 handle.node.add_ons_handle.eth_api().eth_api().subscribe_to_raw_transactions();
             handle.node.task_executor.spawn(Box::pin(forward_raw_transactions(txhandle, raw_txs)));
